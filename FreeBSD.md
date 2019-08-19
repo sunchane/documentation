@@ -1,24 +1,25 @@
-這是影片安裝小筆記
+# 這是 FreeBSD 影片安裝小筆記
 
-FreeBSD、 sshd、 ntpd、 samba48、 xfce4、 slim
-fcitx、 chromium、 思源黑體、、 gvim、 emacs、
+* ##### 裡面有些 URL 連結失效了。
 
-1. 下載最新 FreeBSD-12.0-RELEASE-amd64-dvd1.iso
+FreeBSD、 sshd、 ntpd、 samba48、 xfce4、 slim、 fcitx、 chromium、 思源黑體、 gvim、 emacs
 
-2. 示範用 VMware 安裝, 光碟安裝 Base 因為單純所以不做說明。
- grub 開機等議題太長篇大論，目的是架設 FreeBSD 在 Windows 上的開發環境。
- 一般使用者最好先加入 wheel group 這樣就可以 su 成 root
+## 1. 下載最新 FreeBSD-12.0-RELEASE-amd64-dvd1.iso
 
-3. 設定 sshd 以便 Windows 下能夠用 cmdr 等終端機程式操作 （畫面太小）。
- ee /etc/ssh/sshd.conf
+## 2. 示範用 VMware 安裝, 光碟安裝 Base 因為單純所以不做說明。
+* grub 開機等議題太長篇大論，目的是架設 FreeBSD 在 Windows 上的開發環境。
+* 一般使用者最好先加入 wheel group 這樣就可以 su 成 root
+
+## 3. 設定 sshd 以便 Windows 下能夠用 cmdr 等終端機程式操作 （畫面太小）。
+* ee /etc/ssh/sshd.conf
  
- PermitRootLogin yes
+* PermitRootLogin yes
  
- service sshd restart
+* service sshd restart
  ifconfig
 
-4. 安裝 Samba48, 因為套件內沒有 smb4.conf 的 Example, 所以要用 cmdr 終端複製貼上。
- pkg update
+## 4. 安裝 Samba48, 因為套件內沒有 smb4.conf 的 Example, 所以要用 cmdr 終端複製貼上。
+* pkg update
  pkg install samba46
  
  ee /etc/rc.conf 
@@ -30,10 +31,10 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  ee /usr/local/etc/smb4.conf
  修改 smb4.conf
  
- 參考設定網址： https://www.freebsd.org/doc/zh_TW/books/handbook/network-samba.html
+* 參考設定網址： https://www.freebsd.org/doc/zh_TW/books/handbook/network-samba.html
    https://github.com/samba-team/samba/blob/master/examples/smb.conf.default
    
- [global]
+* [global]
  workgroup = WORKGROUP
  server string = Samba Server Version %v
  netbios name = ExampleMachine
@@ -47,15 +48,15 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  service samba_server start
  service ftpd onestart
  
- 測試 Windows 登入，打開資料夾並顯示隱藏檔 （方便修改 user HOME 的設定檔）。
+* 測試 Windows 登入，打開資料夾並顯示隱藏檔 （方便修改 user HOME 的設定檔）。
  VMware 預設的網路設定有可能會讓 Samba 無法連線，如果用 smbclient 出現 protocol negotiation failed: NT_STATUS_IO_TIMEOUT
  請用 bsdconfig 進入 Networking Management > DHCP 反覆關閉開啟 Enabled 試試，或者把 VMware 的 Virtual Network Editor 點選 Restore Defaults，Samba 的版本目前是使用 samba46。
  等會處理
  
-5. 安裝桌面環境 xfce (輕巧畫面精美)
- pkg install xorg xorg xfce xf86-video-vmware slim font-manager
+## 5. 安裝桌面環境 xfce (輕巧畫面精美)
+* pkg install xorg xorg xfce xf86-video-vmware slim font-manager
  				這一個實機上應該不適用
- ee /etc/rc.conf
+* ee /etc/rc.conf
  dbus_enable="YES"
  hald_enable="YES"
  slim_enable="YES"
@@ -63,11 +64,11 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  Xorg -configure
  mv ~/xorg.conf.new /usr/local/etc/X11/xorg.conf
  
-6. 安裝輸入法 fcitx
+## 6. 安裝輸入法 fcitx
  pkg install zh-fcitx zh-fcitx-configtool zh-fcitx-chewing git wget
 
-7. 修改語系、設定桌面環境登入管理
- ee /etc/profile
+## 7. 修改語系、設定桌面環境登入管理
+* ee /etc/profile
  加入
  
  LANG="zh_TW.UTF-8"; export LANG
@@ -85,7 +86,7 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  LC_IDENTIFICATION="zh_TW.UTF-8"; export LC_IDENTIFICATION
  LC_ALL="zh_TW.UTF-8"; export LC_ALL
  
- ee ~/.xinitrc
+* ee ~/.xinitrc
  加入（/home/使用者/.xinitrc 也要,另外登入一般使用者加入。）
  
  export LANGUAGE="zh_TW.UTF-8"
@@ -109,16 +110,17 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  fcitx &
  exec xfce4-session
 
-8. 重新開機 這時候應該可以看到登入畫面
- 用一般使用者登入操作桌面，root 登入的話有時後會不能執行一些程式 像 chromium。
+## 8. 重新開機 這時候應該可以看到登入畫面
+* 用一般使用者登入操作桌面，root 登入的話有時後會不能執行一些程式 像 chromium。
  稍微修改 滑鼠太快、解析度大小。
  
- 這時候就少用 root 登入了，所以可以在需要 su 的使用者加入 wheel 使用者群組。
+* 這時候就少用 root 登入了，所以可以在需要 su 的使用者加入 wheel 使用者群組。
  bsdconfig
- 但是還是使用外部的 ssh 登入 root 較方便。
 
-9. 安裝字型 其實不用安裝一大堆套件 所以選用兩種自己安裝的字型
- 思源黑體 （會缺字但是比文泉驛正黑體美觀，可以設定為系統字體跟網頁字體。）
+* 但是還是使用外部的 ssh 登入 root 較方便。
+
+## 9. 安裝字型 其實不用安裝一大堆套件 所以選用兩種自己安裝的字型
+* 思源黑體 （會缺字但是比文泉驛正黑體美觀，可以設定為系統字體跟網頁字體。）
  文泉驛正黑體 （不缺字，加裝後不會有方塊字。）
  
  在一般使用者登入的情況下
@@ -128,14 +130,16 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  wget https://github.com/blockstack/blockstack.js/raw/master/docs/assets/fonts/OTF/SourceCodePro-Regular.otf
  wget https://github.com/tkiapril/source-fonts/raw/master/SourceHanSansTW-Regular.otf
 
- 開啟 font-manager 或是直接指令 font-manager 應該就可以在 User 項看到
- 
- 接著就在 設定值>外觀　　以及　視窗管理程式等等設定字型
+* 如果用這種方式安裝的話，像是開機管理畫面，或者是一些 i3 環境執行的程式，會找不到字型，比較保險的方式就直接用 pkg 安裝就好。
 
-10.　設定　ｆｃｉｔｘ　輸入法
- 很可惜　ＦｒｅｅＢＳＤ　版本的　設定視窗沒有調輸入選字的顏色字體要用設定檔改。
+* 開啟 font-manager 或是直接指令 font-manager 應該就可以在 User 項看到
  
- ｃｄ　～／.config/fcitx
+* 接著就在 設定值>外觀　　以及　視窗管理程式等等設定字型
+
+## 10.　設定　ｆｃｉｔｘ　輸入法
+* 很可惜　ＦｒｅｅＢＳＤ　版本的　設定視窗沒有調輸入選字的顏色字體要用設定檔改。
+ 
+* ｃｄ　～／.config/fcitx
  mkdir skin
  cd skin
  mkdir dark
@@ -144,22 +148,22 @@ fcitx、 chromium、 思源黑體、、 gvim、 emacs、
  如最下
  
  
-11.　現在桌面已經很美化了，可以用　ｒｏｏｔ　安裝其他軟體了（用　ｃｍｄｒ　等　ｓｓｈ　終端機登入比較好，只是要安裝程式）。
+## 11.　現在桌面已經很美化了，可以用　ｒｏｏｔ　安裝其他軟體了（用　ｃｍｄｒ　等　ｓｓｈ　終端機登入比較好，只是要安裝程式）。
 
- pkg install chromium vim emacs
+* pkg install chromium vim emacs
  
-12. 其他
- 設定 Vim
+## 12. 其他
+* 設定 Vim
  cd /usr/local/share/vim/vim81/colors/
  https://www.vim.org/scripts/download_script.php?src_id=9771
  可以使用 Filezilla 把檔案先傳到 FreeBSD
  接著一般使用者目錄編輯 .vimrc
  ee ~/.vimrc
 
-	感謝您的收看
+*	感謝您的收看
 
 
-fcitx_skin.conf
+* fcitx_skin.conf
 
 [SkinInfo]
 # 佈景名稱
