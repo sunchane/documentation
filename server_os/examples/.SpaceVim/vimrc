@@ -1,0 +1,168 @@
+"=============================================================================
+" vimrc --- Entry file for vim
+" Copyright (c) 2016-2020 Shidong Wang & Contributors
+" Author: Shidong Wang < wsdjeg@outlook.com >
+" URL: https://spacevim.org
+" License: GPLv3
+"=============================================================================
+
+" Note: Skip initialization for vim-tiny or vim-small.
+if 1
+    let g:_spacevim_if_lua = 0
+    if has('lua')
+        if has('win16') || has('win32') || has('win64')
+            let s:plugin_dir = fnamemodify(expand('<sfile>'), ':h').'\lua'
+            let s:str = s:plugin_dir . '\?.lua;' . s:plugin_dir . '\?\init.lua;'
+        else
+            let s:plugin_dir = fnamemodify(expand('<sfile>'), ':h').'/lua'
+            let s:str = s:plugin_dir . '/?.lua;' . s:plugin_dir . '/?/init.lua;'
+        endif
+        silent! lua package.path=vim.eval("s:str") .. package.path
+        if empty(v:errmsg)
+            let g:_spacevim_if_lua = 1
+        endif
+    endif
+    execute 'source' fnamemodify(expand('<sfile>'), ':h').'/main.vim'
+endif
+" vim:set et sw=2
+
+set nocompatible
+set encoding=utf-8
+:set fileencoding=utf-8
+:set shell=/usr/local/bin/zsh
+" :set ssop+=resize,winpos,winsize,blank,buffers,curdir,folds,help,options,tabpages
+
+:set guifont=IBM\ Plex\ Mono\ 14
+:set guifontwide=IBM\ Plex\ Mono\ 18
+
+:set guioptions+=m
+:nmap mo :set guioptions+=m<CR>
+:nmap mc :set guioptions-=m<CR>
+" 行間距加大
+:set linespace=10
+:set lines=15 columns=100
+" Tagbar 設定
+let g:tagbar_ctags_bin='/usr/bin/ctags'
+nmap <F8> :TagbarToggle<CR>
+
+"
+" Org Mode 設定
+"
+let maplocalleader = ','
+set spell
+" :map c ggVG"*d
+
+"
+" PlantUML 設定
+"
+let g:plantuml_executable_script='java -jar ~/portable/server/plantuml.jar -charset UTF-8 -tpng $@'
+
+" 設定 Tagbar Go
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+
+" 設定 Perl Tagbar
+let g:tagbar_type_perl = {
+    \ 'ctagstype' : 'perl',
+    \ 'kinds'     : [
+        \ 'p:package:0:0',
+        \ 'w:roles:0:0',
+        \ 'e:extends:0:0',
+        \ 'u:uses:0:0',
+        \ 'r:requires:0:0',
+        \ 'o:ours:0:0',
+        \ 'a:properties:0:0',
+        \ 'b:aliases:0:0',
+        \ 'h:helpers:0:0',
+        \ 's:subroutines:0:0',
+        \ 'd:POD:1:0'
+    \ ]
+\ }
+
+" 設定 C++ Tagbar cdefglmnpstuvx
+let g:tagbar_type_cpp = {
+    \ 'kinds' : [
+        \ 'd:macros:1',
+        \ 'g:enums',
+        \ 't:typedefs:0:0',
+        \ 'e:enumerators:0:0',
+        \ 'n:namespaces',
+        \ 'c:classes',
+        \ 's:structs',
+        \ 'u:unions',
+        \ 'f:functions',
+        \ 'm:members:0:0',
+        \ 'v:global:0:0',
+        \ 'x:external:0:0',
+        \ 'l:local:0:0'
+    \ ]
+\ } 
+
+" 設定 nginx 語法顏色
+au BufRead,BufNewFile nginx.conf set ft=nginx
+
+" 執行 Project 資料夾的 .vimrc
+:set exrc
+
+" 設定 Braces
+let g:delimitMate_expand_cr = 1
+
+" 設定 HOWM
+set runtimepath+=~/.SpaceVim/qfixhowm
+let mapleader=','
+let QFixHowm_Key = 'g'
+let QFixHowm_KeyB = ','
+let howm_dir             = '~/smb/dropbox/HOWM'
+let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.org'
+set fileencodings=ucs-bom,utf-8,iso-2022-jp,euc-jp,cp932,utf-16le,utf-16,default
+set fileformats=dos,unix,mac
+let howm_fileencoding    = 'utf-8'
+let howm_fileformat      = 'dos'
+let QFixHowm_FileType = 'qfix_memo'
+let QFixHowm_FileType = 'org'
+let QFixHowm_Title = '*'
+let QFixWin_EnableMode = 0
+let QFix_UseLocationList = 1
+let QFixHowm_ST = +8
+
+" 設定 Ultisnips
+" let g:UltiSnipsSnippetsDir = ""
+let g:UltiSnipsSnippetDirectories = ['~/.cache/vimfiles/.cache/vimrc/.dein/UltiSnips', '~/.vim/UltiSnips', 'UltiSnips']
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" vCooler CSS 選取顏色
+let g:vcoolor_lowercase = 1
+let g:vcoolor_disable_mappings = 1
+let g:vcoolor_map = '<leader>g'
+
+" 設定 Coc
+let g:coc_global_extensions = ['coc-vimlsp', 'coc-ultisnips', 'coc-json', 'coc-tsserver', 'coc-webpack', 'coc-eslint', 'coc-svelte', 'coc-html', 'coc-css', 'coc-yaml']
+nmap gd <C-W>v<C-W>l:call CocAction('jumpDefinition')<CR>

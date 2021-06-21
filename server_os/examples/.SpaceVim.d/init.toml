@@ -1,0 +1,94 @@
+#=============================================================================
+# dark_powered.toml --- dark powered configuration example for SpaceVim
+# Copyright (c) 2016-2020 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg at 163.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+    colorscheme = "gruvbox"
+    colorscheme_bg = "dark"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = true
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "arrow"
+    statusline_iseparator = "arrow"
+    buffer_index_type = 4
+    enable_tabline_filetype_icon = true
+    enable_statusline_mode = false
+
+# Enable autocomplete layer
+[[layers]]
+name = 'autocomplete'
+auto_completion_return_key_behavior = "complete"
+auto_completion_tab_key_behavior = "smart"
+
+[[layers]]
+name = 'shell'
+default_position = 'top'
+default_height = 30
+
+[[layers]]
+    name = "autocomplete"
+    enable = false
+
+# Fuzzy Find 設定
+[[layers]]
+name = "fzf"
+
+# Git 設定
+[[layers]]
+name = "git"
+
+# 設定 Github 整合工具
+# [[custom_plugins]]
+# name = 'tpope/vim-fugitive'
+
+# 設定 Org Mode
+[[custom_plugins]]
+name = 'jceb/vim-orgmode'
+[[custom_plugins]]
+name = 'tpope/vim-speeddating'
+
+# 設定 Ultisnips 必須安裝才能夠跟 Coc 使用
+[[custom_plugins]]
+name = 'SirVer/ultisnips'
+[[custom_plugins]]
+name = 'honza/vim-snippets'
+
+# 設定 Tagbar 列表
+[[custom_plugins]]
+name = 'majutsushi/tagbar'
+[[custom_plugins]]
+name = 'hushicai/tagbar-javascript.vim'
+
+# 設定 Syntax Check
+# [[custom_plugins]]
+# name = 'scrooloose/syntastic'
+
+# 設定 Wordpress 密碼檔要用 UTF-8 以外的編碼
+[[custom_plugins]]
+name = 'mrpeterlee/vimwordpress'
+# 設定 Twitter
+[[custom_plugins]]
+name = 'twitvim/twitvim'
+
+# 設定 PlantUML
+[[custom_plugins]]
+name = 'aklt/plantuml-syntax'
+
+# 設定 coc.nvim neoclide/coc.nvim 裡面所有存在 yarn.lock 的目錄中 執行 yarn install --frozen-lockfile
+[[custom_plugins]]
+name = 'neoclide/coc.nvim'
+
+# 設定 perldoc
+[[custom_plugins]]
+name = 'hotchpotch/perldoc-vim'
+
